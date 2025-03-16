@@ -23,16 +23,8 @@ ciphertexts = [bytes.fromhex(c) for c in ciphers_hex]
 target = bytes.fromhex(target_hex)
 key_guess = [None] * len(target)
 
-def english_score(text_bytes):
-    text = ''.join(chr(b) if 32 <= b <= 126 else '.' for b in text_bytes)
-    counter = Counter(text.upper())
-    return sum(ENGLISH_FREQ.get(c, 0)*counter.get(c,0) for c in ENGLISH_FREQ)
-
 def xor_bytes(b1, b2):
     return bytes([a ^ b for a, b in zip(b1, b2)])
-
-def decrypt_with_key(cipher, key):
-    return ''.join(chr(c ^ k) if k is not None else '_' for c, k in zip(cipher, key))
 
 def guess_target_from_space(ciphertexts, target):
     guess = ['.'] * len(target)
